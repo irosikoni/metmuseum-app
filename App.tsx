@@ -1,30 +1,49 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import MuseumDepartments from './components/MuseumDepartments';
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
+import MuseumDepartmentsScreen from "./components/MuseumDepartments";
+import HomeScreen from "./components/HomeScreen";
+import FavouriteObjectsScreen from "./components/FavouriteObjectsScreen";
+import MuseumObject from "./components/MuseumObject";
 
+const Tab = createBottomTabNavigator();
 
-
-export default function App() {
-
-  // fetch('https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=1').then(response => response.json())
-  // .then(data => console.log(data));
-  
-
+function SettingsScreen() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <MuseumDepartments />
-      <View></View>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Settings!</Text>
     </View>
   );
 }
 
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Favourite" component={FavouriteObjectsScreen} />
+        <Tab.Screen name="Departments" component={MuseumDepartmentsScreen} />
+        <Tab.Screen name="ObjectScreen" component={MuseumObject} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
 const styles = StyleSheet.create({
+  navigationContainer: {
+    flex: 1,
+    backgroundColor: "#AFE0CE",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#FFEDDF",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
   },
 });
