@@ -6,16 +6,9 @@ import MuseumDepartmentsScreen from "./components/MuseumDepartments";
 import HomeScreen from "./components/HomeScreen";
 import FavouriteObjectsScreen from "./components/FavouriteObjectsScreen";
 import MuseumObject from "./components/MuseumObject";
+import "@total-typescript/ts-reset";
 
 const Tab = createBottomTabNavigator();
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
 
 export default function App() {
   return (

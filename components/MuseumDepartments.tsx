@@ -2,8 +2,12 @@ import { Link, NativeBaseProvider } from "native-base";
 import { useState, useEffect } from "react";
 import { FlatList, Text, View, StyleSheet, Button } from "react-native";
 import { z } from "zod";
-import { useNavigation } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  NavigationContainer,
+  RouteProp,
+  useNavigation,
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MuseumObjects from "./MuseumObjects";
 
 export type Department = z.infer<typeof departmentSchema>;
@@ -41,7 +45,7 @@ export default function MuseumDepartmentsScreen() {
       "https://collectionapi.metmuseum.org/public/collection/v1/departments"
     );
     const data = dataSchema.parse(await response.json());
-    console.log(typeof data.departments);
+    console.log(JSON.stringify(data.departments));
     setData(data.departments);
     setLoading(false);
   };
@@ -50,29 +54,39 @@ export default function MuseumDepartmentsScreen() {
   }, []);
 
   type RootStackParamList = {
-    MuseumObjects: { department: Department };
+    MuseumObjects: { departmentId: number; displayName: string };
   };
   const navigation = useNavigation();
-  const Stack = createStackNavigator<RootStackParamList>();
+  const Stack = createNativeStackNavigator();
 
   const renderDepartment = (item: Department) => {
     return (
-      <View style={departmentStyles.container}>
-        {/* <Button
-          title={item.displayName}
-          onPress={() => {
-            navigation.navigate("MuseumObjects", { department: item });
-          }}
-        /> */}
-        {/* <Stack.Navigator>
+      // <View style={departmentStyles.container}>
+      //   <Text>{item.displayName}</Text>
+      // </View>
+      <NavigationContainer>
+        <Stack.Navigator>
           <Stack.Screen
             name="MuseumObjects"
             component={MuseumObjects}
-            initialParams={{ department: item }}
+            initialParams={{
+              departmentId: item.departmentId,
+              displayName: item.displayName,
+            }}
           />
-        </Stack.Navigator> */}
-        <Text>{item.displayName}</Text>
-      </View>
+        </Stack.Navigator>
+      </NavigationContainer>
+      // <View style={departmentStyles.container}>
+      //   <Button
+      //     title={item.displayName}
+      //     onPress={() =>
+      //       navigation.navigate<RootStackParamList>("MuseumObjects", {
+      //         departmentId: item.departmentId,
+      //         displayName: item.displayName,
+      //       })
+      //     }
+      //   />
+      // </View>
     );
   };
 
