@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { FlatList, Text, View, StyleSheet, Button } from "react-native";
 import { z } from "zod";
 import { Props } from "../App";
+import SwiperFlatList from "react-native-swiper-flatlist";
 
 export type Department = z.infer<typeof departmentSchema>;
 
@@ -18,15 +19,19 @@ const dataSchema = z.object({
 const departmentStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#AFE0CE",
+    backgroundColor: "#708F89",
     alignItems: "center",
     justifyContent: "center",
     margin: 10,
+    width: 300,
+    height: 100,
+    borderRadius: 10,
   },
   departmentBox: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#D5D3C4",
   },
 });
 
@@ -64,10 +69,20 @@ export default function MuseumDepartmentsScreen({ navigation, route }: Props) {
 
   return (
     <View style={departmentStyles.departmentBox}>
-      <FlatList
+      {/* <FlatList
         data={data}
         renderItem={({ item }) => renderDepartment(item)}
         keyExtractor={(item) => item.departmentId.toString()}
+      /> */}
+      <SwiperFlatList
+        // autoplay
+        autoplayDelay={2}
+        // autoplayLoop
+        // index={2}
+        showPagination
+        data={data}
+        renderItem={({ item }) => renderDepartment(item)}
+        // keyExtractor={(item) => item.departmentId.toString()}
       />
     </View>
   );

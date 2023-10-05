@@ -10,6 +10,7 @@ export default function DepartmentsStackScreen() {
       <DepartmentsStack.Screen
         name="DepartmentsList"
         component={MuseumDepartmentsScreen}
+        options={{ headerShown: false }}
       />
       <DepartmentsStack.Screen
         name="MuseumObjects"

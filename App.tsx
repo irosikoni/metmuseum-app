@@ -7,6 +7,8 @@ import FavouriteObjectsScreen from "./components/FavouriteObjectsScreen";
 import MuseumObject from "./components/MuseumObject";
 import DepartmentsStackScreen from "./components/DepartmentStackScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { BlurView } from "expo-blur";
+import HomeStackScreen from "./components/HomeStackScreen";
 
 const Tab = createBottomTabNavigator();
 export type RootStackParamList = {
@@ -18,8 +20,31 @@ export type Props = NativeStackScreenProps<RootStackParamList>;
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Navigator
+        screenOptions={{
+          tabBarStyle: { position: "absolute" },
+          tabBarBackground: () => (
+            <BlurView
+              tint="light"
+              intensity={30}
+              style={StyleSheet.absoluteFill}
+            />
+          ),
+          headerStyle: { backgroundColor: "#708F89" },
+          // headerBackground: () => (
+          //   <BlurView
+          //     tint="light"
+          //     intensity={30}
+          //     style={StyleSheet.absoluteFill}
+          //   />
+          // ),
+        }}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeStackScreen}
+          options={{ headerShown: false }}
+        />
         <Tab.Screen name="Favourite" component={FavouriteObjectsScreen} />
         <Tab.Screen name="Departments" component={DepartmentsStackScreen} />
         <Tab.Screen name="ObjectScreen" component={MuseumObject} />
@@ -43,5 +68,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+  },
+
+  tabNavigator: {
+    flex: 1,
+    backgroundColor: "#AFE0CE",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
 });

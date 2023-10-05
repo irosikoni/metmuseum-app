@@ -3,25 +3,13 @@ import { FlatList, Text, View, StyleSheet, Image } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import { z } from "zod";
 
-type DepartmentObject = {
-  objectID: number;
-  accessionYear: string;
-  primaryImage: string;
-  objectName: string;
-};
-
-const a = {
-  a: 12,
-  b: 13,
-  c: 25,
-};
-
-const schema = z.object({
-  a: z.number(),
-  b: z.number(),
+const objectSchema = z.object({
+  objectID: z.number(),
+  accessionYear: z.string(),
+  primaryImage: z.string(),
+  objectName: z.string(),
 });
-
-const b = schema.parse(a);
+type DepartmentObject = z.infer<typeof objectSchema>;
 
 export default function MuseumObject() {
   const [data, setData] = useState<DepartmentObject>();
@@ -31,7 +19,7 @@ export default function MuseumObject() {
     const response = await fetch(
       "https://collectionapi.metmuseum.org/public/collection/v1/objects/1250"
     );
-    const data = await response.json();
+    const data = objectSchema.parse(await response.json());
     // console.log(typeof data);
     setData(data);
     setLoading(false);
@@ -40,9 +28,18 @@ export default function MuseumObject() {
     fetchObject();
   }, []);
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "#D5D3C4",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  });
+
   return (
     <NativeBaseProvider>
-      <View>
+      <View style={styles.container}>
         <Text>{data ? data.objectName : "Nie ma nazwy"}</Text>
         <Image
           source={{ uri: data ? data.primaryImage : "https://picsum.photos/" }}

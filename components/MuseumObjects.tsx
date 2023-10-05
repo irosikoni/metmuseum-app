@@ -11,6 +11,13 @@ const objectsInDepartmentsSchema = z.object({
   objectIDs: z.array(z.number()),
 });
 
+const objectSchema = z.object({
+  primaryImage: z.string(),
+  objectName: z.string(),
+});
+
+type MuseumObject = z.infer<typeof objectSchema>;
+
 const objectStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -29,13 +36,15 @@ const objectStyles = StyleSheet.create({
 export default function MuseumObjects({ route }: Props) {
   console.log(route.params);
   const { departmentId, displayName } = departmentSchema.parse(route.params);
+
   const [data, setData] = useState<number[]>([]);
-  const [objectInfo, setObjectInfo] = useState<number>();
   const [loading, setLoading] = useState(true);
 
   const fetchObjects = async () => {
     const response = await fetch(
-      `https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${departmentId}`
+      departmentId === -1
+        ? `https://collectionapi.metmuseum.org/public/collection/v1/search?title=true&q=${displayName}`
+        : `https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${departmentId}`
     );
     const data = objectsInDepartmentsSchema.parse(await response.json());
     setData(data.objectIDs);
@@ -47,21 +56,24 @@ export default function MuseumObjects({ route }: Props) {
     const response = await fetch(
       `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectId}`
     );
-    const data = await response.json();
-    console.log(data);
+    const objectData = objectSchema.parse(await response.json());
+    console.log(objectData);
+    setObjectInfo(objectData);
   };
 
   useEffect(() => {
     fetchObjects();
   }, []);
 
+  const [objectInfo, setObjectInfo] = useState<MuseumObject>();
   const renderObject = (item: number) => {
     // console.log(item);
-
+    // fetchObject(item);
     return (
       <View style={objectStyles.container}>
         {/* <Text>{item.toString()}</Text> */}
         <Text>{item}</Text>
+        {/* <Text>{objectInfo ? objectInfo.objectName : "Nie ma nazwy"}</Text> */}
         {/* <Button title={item.toString()} /> */}
       </View>
     );
