@@ -5,18 +5,12 @@ import { departmentSchema } from "./MuseumDepartments";
 import { Button, FlatList, NativeBaseProvider } from "native-base";
 import { z } from "zod";
 import { NativeBaseConfigProvider } from "native-base/lib/typescript/core/NativeBaseContext";
+import ObjectPanel from "./ObjectPanel";
 
 const objectsInDepartmentsSchema = z.object({
   total: z.number(),
   objectIDs: z.array(z.number()),
 });
-
-const objectSchema = z.object({
-  primaryImage: z.string(),
-  objectName: z.string(),
-});
-
-type MuseumObject = z.infer<typeof objectSchema>;
 
 const objectStyles = StyleSheet.create({
   container: {
@@ -52,39 +46,17 @@ export default function MuseumObjects({ route }: Props) {
     // console.log(data.objectIDs);
   };
 
-  const fetchObject = async (objectId: number) => {
-    const response = await fetch(
-      `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectId}`
-    );
-    const objectData = objectSchema.parse(await response.json());
-    console.log(objectData);
-    setObjectInfo(objectData);
-  };
-
   useEffect(() => {
     fetchObjects();
   }, []);
 
-  const [objectInfo, setObjectInfo] = useState<MuseumObject>();
-  const renderObject = (item: number) => {
-    // console.log(item);
-    // fetchObject(item);
-    return (
-      <View style={objectStyles.container}>
-        {/* <Text>{item.toString()}</Text> */}
-        <Text>{item}</Text>
-        {/* <Text>{objectInfo ? objectInfo.objectName : "Nie ma nazwy"}</Text> */}
-        {/* <Button title={item.toString()} /> */}
-      </View>
-    );
-  };
   return (
     <View style={objectStyles.objectBox}>
       <Text>{displayName}</Text>
       <NativeBaseProvider>
         <FlatList
           data={data}
-          renderItem={({ item }) => renderObject(item)}
+          renderItem={({ item }) => ObjectPanel(item)}
           keyExtractor={(item) => item.toString()}
         />
       </NativeBaseProvider>

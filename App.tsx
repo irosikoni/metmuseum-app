@@ -9,6 +9,7 @@ import DepartmentsStackScreen from "./components/DepartmentStackScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BlurView } from "expo-blur";
 import HomeStackScreen from "./components/HomeStackScreen";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();
 export type RootStackParamList = {
@@ -43,7 +44,14 @@ export default function App() {
         <Tab.Screen
           name="Home"
           component={HomeStackScreen}
-          options={{ headerShown: false }}
+          options={{
+            headerShown: false,
+            tabBarIcon: () => (
+              <MaterialCommunityIcons name="home" color="#354D2F" size={30} />
+            ),
+            tabBarInactiveTintColor: "#354D2F",
+            tabBarActiveTintColor: "#354D2F",
+          }}
         />
         <Tab.Screen name="Favourite" component={FavouriteObjectsScreen} />
         <Tab.Screen name="Departments" component={DepartmentsStackScreen} />
