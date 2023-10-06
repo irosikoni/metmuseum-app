@@ -9,7 +9,17 @@ const objectSchema = z.object({
 
 type MuseumObject = z.infer<typeof objectSchema>;
 
-export default function ObjectPanel(objectId: number) {
+const styles = StyleSheet.create({
+  panel: {
+    flex: 1,
+    backgroundColor: "#AFE0CE",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 10,
+  },
+});
+
+export default function ObjectPanel({ objectId }: { objectId: number }) {
   const [objectInfo, setObjectInfo] = useState<MuseumObject>();
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +28,7 @@ export default function ObjectPanel(objectId: number) {
       `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectId}`
     );
     const objectData = objectSchema.parse(await response.json());
-    console.log(objectData);
+    // console.log(objectData);
     setObjectInfo(objectData);
     setLoading(false);
   };

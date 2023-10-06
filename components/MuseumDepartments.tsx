@@ -1,6 +1,13 @@
 import { Link, NativeBaseProvider } from "native-base";
 import { useState, useEffect } from "react";
-import { FlatList, Text, View, StyleSheet, Button } from "react-native";
+import {
+  FlatList,
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  Pressable,
+} from "react-native";
 import { z } from "zod";
 import { Props } from "../App";
 import SwiperFlatList from "react-native-swiper-flatlist";
@@ -17,11 +24,8 @@ const dataSchema = z.object({
 });
 
 const departmentStyles = StyleSheet.create({
-  container: {
-    flex: 1,
+  button: {
     backgroundColor: "#708F89",
-    alignItems: "center",
-    justifyContent: "center",
     margin: 10,
     width: 300,
     height: 100,
@@ -32,6 +36,16 @@ const departmentStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#D5D3C4",
+  },
+  swiper: {
+    position: "absolute",
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    top: 37,
+    color: "#D5D3C4",
   },
 });
 
@@ -53,17 +67,17 @@ export default function MuseumDepartmentsScreen({ navigation, route }: Props) {
 
   const renderDepartment = (item: Department) => {
     return (
-      <View style={departmentStyles.container}>
-        <Button
-          title={item.displayName}
-          onPress={() =>
-            navigation.navigate("MuseumObjects", {
-              departmentId: item.departmentId,
-              displayName: item.displayName,
-            })
-          }
-        />
-      </View>
+      <Pressable
+        style={departmentStyles.button}
+        onPress={() =>
+          navigation.navigate("MuseumObjects", {
+            departmentId: item.departmentId,
+            displayName: item.displayName,
+          })
+        }
+      >
+        <Text style={departmentStyles.text}>{item.displayName}</Text>
+      </Pressable>
     );
   };
 
@@ -75,6 +89,7 @@ export default function MuseumDepartmentsScreen({ navigation, route }: Props) {
         keyExtractor={(item) => item.departmentId.toString()}
       /> */}
       <SwiperFlatList
+        style={departmentStyles.swiper}
         // autoplay
         autoplayDelay={2}
         // autoplayLoop

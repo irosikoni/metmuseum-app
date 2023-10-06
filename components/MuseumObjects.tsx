@@ -15,20 +15,23 @@ const objectsInDepartmentsSchema = z.object({
 const objectStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#AFE0CE",
+    backgroundColor: "#D5D3C4",
     alignItems: "center",
     justifyContent: "center",
-    margin: 10,
+    // margin: 10,
   },
   objectBox: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
+  list: {
+    width: "100%",
+  },
 });
 
 export default function MuseumObjects({ route }: Props) {
-  console.log(route.params);
+  // console.log(route.params);
   const { departmentId, displayName } = departmentSchema.parse(route.params);
 
   const [data, setData] = useState<number[]>([]);
@@ -51,15 +54,16 @@ export default function MuseumObjects({ route }: Props) {
   }, []);
 
   return (
-    <View style={objectStyles.objectBox}>
-      <Text>{displayName}</Text>
-      <NativeBaseProvider>
+    <NativeBaseProvider>
+      <View style={objectStyles.container}>
+        <Text>{displayName}</Text>
         <FlatList
+          style={objectStyles.list}
           data={data}
-          renderItem={({ item }) => ObjectPanel(item)}
+          renderItem={({ item }) => <ObjectPanel objectId={item} />}
           keyExtractor={(item) => item.toString()}
         />
-      </NativeBaseProvider>
-    </View>
+      </View>
+    </NativeBaseProvider>
   );
 }

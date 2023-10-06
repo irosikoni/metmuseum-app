@@ -47,14 +47,30 @@ export default function App() {
           options={{
             headerShown: false,
             tabBarIcon: () => (
-              <MaterialCommunityIcons name="home" color="#354D2F" size={30} />
+              <MaterialCommunityIcons name="home" color="#354D2F" size={28} />
             ),
             tabBarInactiveTintColor: "#354D2F",
             tabBarActiveTintColor: "#354D2F",
           }}
         />
-        <Tab.Screen name="Favourite" component={FavouriteObjectsScreen} />
-        <Tab.Screen name="Departments" component={DepartmentsStackScreen} />
+        <Tab.Screen
+          name="Favourite"
+          component={FavouriteObjectsScreen}
+          options={{
+            tabBarIcon: () => (
+              <MaterialCommunityIcons name="heart" color="#354D2F" size={28} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Departments"
+          component={DepartmentsStackScreen}
+          options={{
+            tabBarIcon: () => (
+              <MaterialCommunityIcons name="book" color="#354D2F" size={28} />
+            ),
+          }}
+        />
         <Tab.Screen name="ObjectScreen" component={MuseumObject} />
       </Tab.Navigator>
     </NavigationContainer>
