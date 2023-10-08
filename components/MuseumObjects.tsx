@@ -18,6 +18,7 @@ const objectStyles = StyleSheet.create({
     backgroundColor: "#D5D3C4",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
     // margin: 10,
   },
   objectBox: {

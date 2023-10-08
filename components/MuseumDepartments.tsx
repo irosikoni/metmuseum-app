@@ -1,16 +1,8 @@
-import { Link, NativeBaseProvider } from "native-base";
 import { useState, useEffect } from "react";
-import {
-  FlatList,
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  Pressable,
-} from "react-native";
+import { Text, StyleSheet, Pressable } from "react-native";
 import { z } from "zod";
 import { Props } from "../App";
-import SwiperFlatList from "react-native-swiper-flatlist";
+import Swiper from "react-native-swiper";
 
 export type Department = z.infer<typeof departmentSchema>;
 
@@ -27,7 +19,6 @@ const departmentStyles = StyleSheet.create({
   button: {
     backgroundColor: "#708F89",
     margin: 10,
-    width: 300,
     height: 100,
     borderRadius: 10,
   },
@@ -38,7 +29,9 @@ const departmentStyles = StyleSheet.create({
     backgroundColor: "#D5D3C4",
   },
   swiper: {
-    position: "absolute",
+    borderWidth: 1,
+    borderColor: "red",
+    margin: 40,
   },
   text: {
     fontSize: 16,
@@ -46,6 +39,22 @@ const departmentStyles = StyleSheet.create({
     textAlign: "center",
     top: 37,
     color: "#D5D3C4",
+  },
+});
+
+const styles = StyleSheet.create({
+  wrapper: {
+    borderWidth: 1,
+    borderColor: "red",
+    position: "relative",
+  },
+  element: {
+    borderWidth: 1,
+    borderColor: "green",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 100,
   },
 });
 
@@ -65,40 +74,22 @@ export default function MuseumDepartmentsScreen({ navigation, route }: Props) {
     fetchDepartments();
   }, []);
 
-  const renderDepartment = (item: Department) => {
-    return (
-      <Pressable
-        style={departmentStyles.button}
-        onPress={() =>
-          navigation.navigate("MuseumObjects", {
-            departmentId: item.departmentId,
-            displayName: item.displayName,
-          })
-        }
-      >
-        <Text style={departmentStyles.text}>{item.displayName}</Text>
-      </Pressable>
-    );
-  };
-
   return (
-    <View style={departmentStyles.departmentBox}>
-      {/* <FlatList
-        data={data}
-        renderItem={({ item }) => renderDepartment(item)}
-        keyExtractor={(item) => item.departmentId.toString()}
-      /> */}
-      <SwiperFlatList
-        style={departmentStyles.swiper}
-        // autoplay
-        autoplayDelay={2}
-        // autoplayLoop
-        // index={2}
-        showPagination
-        data={data}
-        renderItem={({ item }) => renderDepartment(item)}
-        // keyExtractor={(item) => item.departmentId.toString()}
-      />
-    </View>
+    <Swiper style={styles.wrapper} showsButtons showsPagination={false}>
+      {data.map((item) => (
+        <Pressable
+          key={item.departmentId}
+          style={styles.element}
+          onPress={() =>
+            navigation.navigate("MuseumObjects", {
+              departmentId: item.departmentId,
+              displayName: item.displayName,
+            })
+          }
+        >
+          <Text style={departmentStyles.text}>{item.displayName}</Text>
+        </Pressable>
+      ))}
+    </Swiper>
   );
 }
