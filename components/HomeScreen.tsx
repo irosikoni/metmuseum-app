@@ -2,8 +2,6 @@ import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { Props } from "../App";
-import { Picker } from "@react-native-picker/picker";
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -25,28 +23,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     opacity: 1,
-    marginTop: 70,
+    marginTop: -170,
   },
   search: {
     backgroundColor: "#D5D3C4",
     marginTop: 100,
     marginHorizontal: 16,
     width: "90%",
-  },
-  pickersBox: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  picker: {
-    borderWidth: 1,
-    borderRadius: 10,
-    backgroundColor: "#D5D3C4",
-    opacity: 0.8,
-    width: "25%",
-    height: "40%",
-    borderColor: "#D5D3C4",
   },
 });
 
@@ -55,8 +38,6 @@ export default function HomeScreen({ navigation, route }: Props) {
     uri: "https://images.metmuseum.org/CRDImages/ep/original/DT1567.jpg",
   };
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [selectedCulture, setSelectedCulture] = React.useState("all");
-  const [selectedLocation, setSelectedLocation] = React.useState("all");
 
   const onChangeSearch = (query: string) => setSearchQuery(query);
   return (
@@ -74,31 +55,6 @@ export default function HomeScreen({ navigation, route }: Props) {
           })
         }
       />
-      <View style={styles.pickersBox}>
-        <Picker
-          selectedValue={selectedCulture}
-          onValueChange={(currentCurrency) =>
-            setSelectedCulture(currentCurrency)
-          }
-          style={styles.picker}
-        >
-          <Picker.Item label="All" value="" />
-          <Picker.Item label="Greek" value="Greek" />
-          <Picker.Item label="Roman" value="Roman" />
-          <Picker.Item label="Egyptian" value="Egyptian" />
-        </Picker>
-        <Picker
-          selectedValue={selectedCulture}
-          onValueChange={(currentCurrency) =>
-            setSelectedCulture(currentCurrency)
-          }
-          style={styles.picker}
-        >
-          <Picker.Item label="Greek" value="Greek" />
-          <Picker.Item label="Roman" value="Roman" />
-          <Picker.Item label="Egyptian" value="Egyptian" />
-        </Picker>
-      </View>
     </ImageBackground>
   );
 }
