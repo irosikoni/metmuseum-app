@@ -10,11 +10,13 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BlurView } from "expo-blur";
 import HomeStackScreen from "./components/HomeStackScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MuseumObjectScreen from "./components/MuseumObject";
 
 const Tab = createBottomTabNavigator();
 export type RootStackParamList = {
   MuseumObjects: { departmentId: number; displayName: string };
   MuseumDepartmentsScreen: undefined;
+  MuseumObjectScreen: { objectId: number };
 };
 export type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -32,13 +34,6 @@ export default function App() {
             />
           ),
           headerStyle: { backgroundColor: "#708F89" },
-          // headerBackground: () => (
-          //   <BlurView
-          //     tint="light"
-          //     intensity={30}
-          //     style={StyleSheet.absoluteFill}
-          //   />
-          // ),
         }}
       >
         <Tab.Screen
@@ -69,9 +64,14 @@ export default function App() {
             tabBarIcon: () => (
               <MaterialCommunityIcons name="book" color="#354D2F" size={28} />
             ),
+            headerShown: false,
           }}
         />
-        <Tab.Screen name="ObjectScreen" component={MuseumObject} />
+        <Tab.Screen
+          name="MuseumObjectScreen"
+          component={MuseumObjectScreen}
+          options={{ tabBarButton: () => null, headerShown: false }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );

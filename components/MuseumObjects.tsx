@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { Props } from "../App";
 import { departmentSchema } from "./MuseumDepartments";
-import { Button, FlatList, NativeBaseProvider } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import { z } from "zod";
-import { NativeBaseConfigProvider } from "native-base/lib/typescript/core/NativeBaseContext";
 import ObjectPanel from "./ObjectPanel";
+import Swiper from "react-native-swiper";
 
 const objectsInDepartmentsSchema = z.object({
   total: z.number(),
@@ -19,7 +19,6 @@ const objectStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    // margin: 10,
   },
   objectBox: {
     flex: 1,
@@ -30,11 +29,22 @@ const objectStyles = StyleSheet.create({
     width: "100%",
   },
 });
+const styles = StyleSheet.create({
+  wrapper: {
+    position: "relative",
+    backgroundColor: "#D5D3C4",
+  },
+  element: {
+    borderRadius: 10,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#708F89",
+  },
+});
 
-export default function MuseumObjects({ route }: Props) {
-  // console.log(route.params);
+export default function MuseumObjects({ navigation, route }: Props) {
   const { departmentId, displayName } = departmentSchema.parse(route.params);
-
   const [data, setData] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,7 +55,8 @@ export default function MuseumObjects({ route }: Props) {
         : `https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${departmentId}`
     );
     const data = objectsInDepartmentsSchema.parse(await response.json());
-    setData(data.objectIDs);
+
+    setData(data.objectIDs.splice(0, 20));
     setLoading(false);
     // console.log(data.objectIDs);
   };
@@ -56,15 +67,19 @@ export default function MuseumObjects({ route }: Props) {
 
   return (
     <NativeBaseProvider>
-      <View style={objectStyles.container}>
-        <Text>{displayName}</Text>
-        <FlatList
-          style={objectStyles.list}
-          data={data}
-          renderItem={({ item }) => <ObjectPanel objectId={item} />}
-          keyExtractor={(item) => item.toString()}
-        />
-      </View>
+      <Swiper style={styles.wrapper} showsButtons showsPagination={false}>
+        {data.map((item) => (
+          <Pressable
+            key={item}
+            style={styles.element}
+            onPress={() =>
+              navigation.navigate("MuseumObjectScreen", { objectId: item })
+            }
+          >
+            <ObjectPanel key={item} objectId={item} />
+          </Pressable>
+        ))}
+      </Swiper>
     </NativeBaseProvider>
   );
 }

@@ -16,6 +16,7 @@ export default function HomeStackScreen() {
         name="MuseumObjects"
         component={MuseumObjects}
         initialParams={{ departmentId: -1, displayName: "sunflowers" }}
+        options={{ headerShown: false }}
       />
     </HomeStack.Navigator>
   );

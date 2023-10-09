@@ -15,23 +15,18 @@ const dataSchema = z.object({
   departments: z.array(departmentSchema),
 });
 
-const departmentStyles = StyleSheet.create({
-  button: {
-    backgroundColor: "#708F89",
-    margin: 10,
-    height: 100,
-    borderRadius: 10,
-  },
-  departmentBox: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+const styles = StyleSheet.create({
+  wrapper: {
+    position: "relative",
     backgroundColor: "#D5D3C4",
   },
-  swiper: {
-    borderWidth: 1,
-    borderColor: "red",
-    margin: 40,
+  element: {
+    borderRadius: 10,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 100,
+    backgroundColor: "#708F89",
   },
   text: {
     fontSize: 16,
@@ -39,22 +34,6 @@ const departmentStyles = StyleSheet.create({
     textAlign: "center",
     top: 37,
     color: "#D5D3C4",
-  },
-});
-
-const styles = StyleSheet.create({
-  wrapper: {
-    borderWidth: 1,
-    borderColor: "red",
-    position: "relative",
-  },
-  element: {
-    borderWidth: 1,
-    borderColor: "green",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 100,
   },
 });
 
@@ -87,7 +66,7 @@ export default function MuseumDepartmentsScreen({ navigation, route }: Props) {
             })
           }
         >
-          <Text style={departmentStyles.text}>{item.displayName}</Text>
+          <Text style={styles.text}>{item.displayName}</Text>
         </Pressable>
       ))}
     </Swiper>

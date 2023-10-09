@@ -16,6 +16,7 @@ export default function DepartmentsStackScreen() {
         name="MuseumObjects"
         component={MuseumObjects}
         initialParams={{ departmentId: 1, displayName: "American Wing" }}
+        options={{ headerShown: false }}
       />
     </DepartmentsStack.Navigator>
   );
