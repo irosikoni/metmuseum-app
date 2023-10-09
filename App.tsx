@@ -2,9 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import HomeScreen from "./components/HomeScreen";
 import FavouriteObjectsScreen from "./components/FavouriteObjectsScreen";
-import MuseumObject from "./components/MuseumObject";
 import DepartmentsStackScreen from "./components/DepartmentStackScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BlurView } from "expo-blur";
@@ -77,29 +75,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  navigationContainer: {
-    flex: 1,
-    backgroundColor: "#AFE0CE",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-  },
-
-  container: {
-    flex: 1,
-    backgroundColor: "#FFEDDF",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
-
-  tabNavigator: {
-    flex: 1,
-    backgroundColor: "#AFE0CE",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-  },
-});
