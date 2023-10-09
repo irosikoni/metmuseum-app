@@ -55,6 +55,7 @@ export default function App() {
             tabBarIcon: () => (
               <MaterialCommunityIcons name="heart" color="#354D2F" size={28} />
             ),
+            headerShown: false,
           }}
         />
         <Tab.Screen

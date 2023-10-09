@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FlatList, Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import { z } from "zod";
 import { Props } from "../App";
@@ -11,6 +11,8 @@ const objectSchema = z.object({
   accessionYear: z.string(),
   primaryImage: z.string(),
   objectName: z.string(),
+  culture: z.string(),
+  objectDate: z.string(),
 });
 
 const objectParamSchema = z.object({
@@ -23,21 +25,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#D5D3C4",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
+    paddingTop: 50,
   },
-  text: {
+  mainText: {
     color: "#000000",
     fontSize: 40,
     marginTop: 0,
   },
+  text: {
+    color: "#000000",
+    fontSize: 20,
+    margin: 8,
+  },
   image: {
-    width: 200,
     height: 200,
+    width: "80%",
+    margin: 8,
   },
 });
 
 export default function MuseumObjectScreen({ navigation, route }: Props) {
   const { objectId } = objectParamSchema.parse(route.params);
+  console.log(objectId);
   const [data, setData] = useState<DepartmentObject>();
   const [loading, setLoading] = useState(true);
   const [fontsLoaded] = useFonts({
@@ -60,8 +70,16 @@ export default function MuseumObjectScreen({ navigation, route }: Props) {
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
-        <Text style={{ ...styles.text, fontFamily: "YoungSerif-Regular" }}>
+        <Text style={{ ...styles.mainText, fontFamily: "YoungSerif-Regular" }}>
           {data ? data.objectName : "Nie ma nazwy"}
+        </Text>
+        <Text style={{ ...styles.text, fontFamily: "YoungSerif-Regular" }}>
+          This artefact was found in {data ? data.accessionYear : "Nie ma daty"}
+          .
+        </Text>
+        <Text style={{ ...styles.text, fontFamily: "YoungSerif-Regular" }}>
+          It was made in {data ? data.objectDate : "Nie ma daty"} by the{" "}
+          {data?.culture ? data.culture : "unknown"} culture.
         </Text>
         <Image
           source={{
